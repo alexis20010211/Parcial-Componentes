@@ -1,4 +1,3 @@
-# SupportAPI (Avance)
 
 > Este repositorio contiene un avance del backend del proyecto. Todavía está en desarrollo.
 
