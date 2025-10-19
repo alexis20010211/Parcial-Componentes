@@ -1,43 +1,76 @@
 package com.empresa.supportapi.service;
 
-import com.empresa.supportapi.model.Solicitud;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class SolicitudService {
+import org.springframework.stereotype.Service;
 
-    // Lista en memoria tipada correctamente
+import com.empresa.supportapi.model.EstadoSolicitud;
+import com.empresa.supportapi.model.Solicitud;
+
+/**
+ * Implementación en memoria del servicio de gestión de solicitudes de soporte técnico.
+ * 
+ * Esta clase simula la persistencia de datos utilizando una lista en memoria,
+ * cumpliendo con la arquitectura de capas del proyecto (modelo → servicio → controlador).
+ */
+@Service
+public class SolicitudService implements ISolicitudService {
+
+    // Simulación de base de datos en memoria
     private final List<Solicitud> solicitudes = new ArrayList<>();
     private Long nextId = 1L;
 
-    // Listar todas las solicitudes
+    /**
+     * Retorna todas las solicitudes registradas.
+     */
+    @Override
     public List<Solicitud> listar() {
-        return solicitudes; // List<Solicitud>, coincidiendo con el controlador
+        return solicitudes;
     }
 
-    // Registrar nueva solicitud
+    /**
+     * Registra una nueva solicitud en memoria.
+     */
+    @Override
     public Solicitud registrar(Solicitud solicitud) {
         solicitud.setId(nextId++);
+
+        // Si no se envía estado, se asigna por defecto "PENDIENTE"
+        if (solicitud.getEstado() == null) {
+            solicitud.setEstado(EstadoSolicitud.PENDIENTE);
+        }
+
         solicitudes.add(solicitud);
         return solicitud;
     }
 
-    // Obtener solicitud por ID
+    /**
+     * Busca una solicitud por su ID.
+     */
+    @Override
     public Optional<Solicitud> obtenerPorId(Long id) {
         return solicitudes.stream()
                 .filter(s -> s.getId().equals(id))
                 .findFirst();
     }
 
-    // Actualizar solicitud existente
+    /**
+     * Actualiza los datos de una solicitud existente.
+     */
+    @Override
     public Optional<Solicitud> actualizar(Long id, Solicitud solicitudActualizada) {
         for (int i = 0; i < solicitudes.size(); i++) {
             if (solicitudes.get(i).getId().equals(id)) {
+                // Mantener el mismo ID
                 solicitudActualizada.setId(id);
+
+                // Si no se envía un estado nuevo, conservar el anterior
+                if (solicitudActualizada.getEstado() == null) {
+                    solicitudActualizada.setEstado(solicitudes.get(i).getEstado());
+                }
+
                 solicitudes.set(i, solicitudActualizada);
                 return Optional.of(solicitudActualizada);
             }
@@ -45,7 +78,10 @@ public class SolicitudService {
         return Optional.empty();
     }
 
-    // Eliminar solicitud
+    /**
+     * Elimina una solicitud por su ID.
+     */
+    @Override
     public boolean eliminar(Long id) {
         return solicitudes.removeIf(s -> s.getId().equals(id));
     }
