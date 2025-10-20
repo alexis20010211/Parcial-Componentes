@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/tecnicos")
-@Tag(name = "Técnicos", description = "Operaciones CRUD para técnicos")
+@Tag(name = "Técnicos-Controller", description = "Operaciones CRUD para técnicos")
 public class TecnicoController {
 
     private final TecnicoService tecnicoService;
