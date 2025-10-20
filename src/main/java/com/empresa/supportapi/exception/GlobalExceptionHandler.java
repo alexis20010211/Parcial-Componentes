@@ -12,46 +12,59 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     // Maneja errores de validación @Valid
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> manejarValidacion(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, Object>> manejarValidacion(
+            MethodArgumentNotValidException ex, HttpServletRequest request) {
+
         Map<String, Object> response = new HashMap<>();
-        Map<String, String> errores = new HashMap<>();
+        Map<String, String> detalles = new HashMap<>();
 
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errores.put(error.getField(), error.getDefaultMessage());
+            detalles.put(error.getField(), error.getDefaultMessage());
         }
 
         response.put("timestamp", LocalDateTime.now());
         response.put("status", HttpStatus.BAD_REQUEST.value());
         response.put("error", "Error de validación");
-        response.put("detalles", errores);
+        response.put("detalles", detalles);
+        response.put("path", request.getRequestURI());
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // Maneja cuando un recurso no se encuentra (por ejemplo, ID inexistente)
+    // Maneja cuando un recurso no se encuentra
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<Map<String, Object>> manejarNoEncontrado(NoSuchElementException ex) {
+    public ResponseEntity<Map<String, Object>> manejarNoEncontrado(
+            NoSuchElementException ex, HttpServletRequest request) {
+
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status", HttpStatus.NOT_FOUND.value());
         response.put("error", "Recurso no encontrado");
-        response.put("mensaje", ex.getMessage());
+        response.put("detalles", ex.getMessage());
+        response.put("path", request.getRequestURI());
+
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     // Maneja excepciones generales
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> manejarExcepcionGeneral(Exception ex) {
+    public ResponseEntity<Map<String, Object>> manejarExcepcionGeneral(
+            Exception ex, HttpServletRequest request) {
+
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.put("error", "Error interno del servidor");
-        response.put("mensaje", ex.getMessage());
+        response.put("detalles", ex.getMessage());
+        response.put("path", request.getRequestURI());
+
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
