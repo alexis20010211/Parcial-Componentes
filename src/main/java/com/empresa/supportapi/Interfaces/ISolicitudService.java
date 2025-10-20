@@ -1,4 +1,4 @@
-package com.empresa.supportapi.service;
+package com.empresa.supportapi.Interfaces;
 
 import java.util.List;
 import java.util.Optional;

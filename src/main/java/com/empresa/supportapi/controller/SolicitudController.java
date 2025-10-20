@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.empresa.supportapi.Interfaces.ISolicitudService;
 import com.empresa.supportapi.model.Solicitud;
-import com.empresa.supportapi.service.ISolicitudService;
 
 import jakarta.validation.Valid;
 

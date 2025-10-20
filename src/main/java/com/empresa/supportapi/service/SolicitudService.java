@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.empresa.supportapi.Interfaces.ISolicitudService;
 import com.empresa.supportapi.model.EstadoSolicitud;
 import com.empresa.supportapi.model.Solicitud;
 
