@@ -42,3 +42,16 @@ mvn spring-boot:run
 Acceder a Swagger UI para probar la API:
 
 http://localhost:8080/swagger-ui/index.html
+
+
+
+## 👤 Usuarios y Roles para Pruebas (HTTP Basic)
+
+                                      
+## 👤 Usuarios y Roles para Pruebas (HTTP Basic)
+
+| Usuario  | Contraseña | Rol       | Acceso Principal en la API |
+|----------|------------|-----------|----------------------------------------------------------------------|
+| 🛡️ **admin**  | `admin123` | **ADMIN**   | ✅ Acceso completo a **todos los endpoints**|
+| 🛠️ **tecnico**| `tec123`   | **TECNICO** | ⚡ Gestionar **clientes**, **solicitudes** y **estados de solicitudes** |
+| 👤 **cliente**| `cli123`   | **CLIENTE** | 📄 Gestionar únicamente **sus solicitudes**|
