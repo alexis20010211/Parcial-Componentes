@@ -16,15 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.empresa.supportapi.model.Cliente;
 import com.empresa.supportapi.service.ClienteService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 /**
  * Controlador REST para gestionar las operaciones CRUD de los clientes.
- * Cumple con la separación de capas y las buenas prácticas de arquitectura.
+ * Aplica validaciones y sigue el modelo REST.
  */
 @RestController
 @RequestMapping("/api/clientes")
 @CrossOrigin(origins = "*")
+@Tag(name = "Clientes-Controller", description = "Operaciones CRUD para la gestión de clientes")
 public class ClienteController {
 
     private final ClienteService clienteService;
@@ -33,17 +36,23 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    /** 
-     * Obtiene la lista completa de clientes. 
-     */
+    // === 1️⃣ REGISTRAR CLIENTE ===
+    @Operation(summary = "Registrar un nuevo cliente")
+    @PostMapping
+    public ResponseEntity<Cliente> registrar(@Valid @RequestBody Cliente cliente) {
+        Cliente nuevo = clienteService.registrar(cliente);
+        return ResponseEntity.ok(nuevo);
+    }
+
+    // === 2️⃣ OBTENER TODOS LOS CLIENTES ===
+    @Operation(summary = "Obtener la lista completa de clientes")
     @GetMapping
     public List<Cliente> listar() {
         return clienteService.listar();
     }
 
-    /** 
-     * Obtiene un cliente específico por su ID. 
-     */
+    // === 3️⃣ OBTENER CLIENTE POR ID ===
+    @Operation(summary = "Obtener un cliente por su ID")
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> obtener(@PathVariable Long id) {
         return clienteService.obtenerPorId(id)
@@ -51,18 +60,8 @@ public class ClienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    /** 
-     * Registra un nuevo cliente con validación de datos. 
-     */
-    @PostMapping
-    public ResponseEntity<Cliente> registrar(@Valid @RequestBody Cliente cliente) {
-        Cliente nuevo = clienteService.registrar(cliente);
-        return ResponseEntity.ok(nuevo);
-    }
-
-    /** 
-     * Actualiza un cliente existente. 
-     */
+    // === 4️ ACTUALIZAR CLIENTE ===
+    @Operation(summary = "Actualizar los datos de un cliente existente")
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> actualizar(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {
         try {
@@ -73,9 +72,8 @@ public class ClienteController {
         }
     }
 
-    /** 
-     * Elimina un cliente por su ID. 
-     */
+    // === 5️ ELIMINAR CLIENTE ===
+    @Operation(summary = "Eliminar un cliente por su ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         clienteService.eliminar(id);

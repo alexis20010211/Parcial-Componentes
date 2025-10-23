@@ -1,3 +1,9 @@
+// Manejar respuestas HTTP (ResponseEntity)
+// Anotar controladores y endpoints (@RestController, @GetMapping, @PostMapping, etc.)
+// Permitir llamadas desde el frontend (CORS con @CrossOrigin)
+// Usar tu modelo (Cliente)
+// Llamar al servicio de autenticación (AuthService)
+
 package com.empresa.supportapi.controller;
 
 import java.util.List;
@@ -21,35 +27,47 @@ public class AuthController {
 
     private final AuthService authService;
 
+    // === Constructor ===
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
-    // Registro
+    // === 1️⃣ Registro ===
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Cliente cliente) {
         try {
             Cliente registrado = authService.register(cliente);
-            return ResponseEntity.ok(Map.of("mensaje", "Registro exitoso", "cliente", registrado));
+            return ResponseEntity.ok(Map.of(
+                "mensaje", "Registro exitoso",
+                "cliente", registrado
+            ));
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of(
+                "error", e.getMessage()
+            ));
         }
     }
 
-    // Login
+    // === 2️⃣ Login ===
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> datos) {
         try {
             String correo = datos.get("correo");
             String password = datos.get("password");
             Cliente cliente = authService.login(correo, password);
-            return ResponseEntity.ok(Map.of("mensaje", "Login exitoso", "cliente", cliente));
+
+            return ResponseEntity.ok(Map.of(
+                "mensaje", "Login exitoso",
+                "cliente", cliente
+            ));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
+            return ResponseEntity.status(401).body(Map.of(
+                "error", e.getMessage()
+            ));
         }
     }
 
-    // Solo para pruebas
+    // === 3️⃣ Obtener todos los clientes (solo para pruebas) ===
     @GetMapping("/clientes")
     public ResponseEntity<List<Cliente>> getAll() {
         return ResponseEntity.ok(authService.getAllClientes());

@@ -27,10 +27,12 @@ public class TecnicoController {
 
     private final TecnicoService tecnicoService;
 
+    // === Constructor ===
     public TecnicoController(TecnicoService tecnicoService) {
         this.tecnicoService = tecnicoService;
     }
 
+    // === 1️⃣ Crear técnico ===
     @Operation(summary = "Registrar un nuevo técnico")
     @PostMapping
     public ResponseEntity<Tecnico> crearTecnico(@Valid @RequestBody Tecnico tecnico) {
@@ -38,24 +40,28 @@ public class TecnicoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
+    // === 2️⃣ Listar todos los técnicos ===
     @Operation(summary = "Obtener todos los técnicos")
     @GetMapping
     public ResponseEntity<List<Tecnico>> obtenerTodos() {
         return ResponseEntity.ok(tecnicoService.obtenerTodos());
     }
 
+    // === 3️⃣ Obtener técnico por ID ===
     @Operation(summary = "Obtener técnico por ID")
     @GetMapping("/{id}")
     public ResponseEntity<Tecnico> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok(tecnicoService.obtenerPorId(id));
     }
 
+    // === 4️⃣ Actualizar técnico ===
     @Operation(summary = "Actualizar un técnico existente")
     @PutMapping("/{id}")
     public ResponseEntity<Tecnico> actualizar(@PathVariable Long id, @Valid @RequestBody Tecnico tecnico) {
         return ResponseEntity.ok(tecnicoService.actualizar(id, tecnico));
     }
 
+    // === 5️⃣ Eliminar técnico ===
     @Operation(summary = "Eliminar un técnico")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {

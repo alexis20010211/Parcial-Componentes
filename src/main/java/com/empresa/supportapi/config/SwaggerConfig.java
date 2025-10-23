@@ -1,3 +1,4 @@
+// Esto Permite documentar  automaticamente  los Endpoints   mediante Swagger UI
 package com.empresa.supportapi.config;
 
 import org.springframework.context.annotation.Bean;
