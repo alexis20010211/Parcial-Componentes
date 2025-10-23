@@ -68,4 +68,7 @@ public class TecnicoController {
         tecnicoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+
+    // === 6 obtener tecnicos por nombre
 }
