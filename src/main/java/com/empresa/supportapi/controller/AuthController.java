@@ -32,7 +32,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    // === 1️⃣ Registro ===
+    // ===  Registro ===
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Cliente cliente) {
         try {
@@ -48,7 +48,7 @@ public class AuthController {
         }
     }
 
-    // === 2️⃣ Login ===
+    // === Login ===
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> datos) {
         try {
@@ -67,7 +67,7 @@ public class AuthController {
         }
     }
 
-    // === 3️⃣ Obtener todos los clientes (solo para pruebas) ===
+    // === Obtener todos los clientes (solo para pruebas) ===
     @GetMapping("/clientes")
     public ResponseEntity<List<Cliente>> getAll() {
         return ResponseEntity.ok(authService.getAllClientes());

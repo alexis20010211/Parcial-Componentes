@@ -36,7 +36,7 @@ public class ClienteController {
         this.clienteService = clienteService;
     }
 
-    // === 1️⃣ REGISTRAR CLIENTE ===
+    // ===  REGISTRAR CLIENTE ===
     @Operation(summary = "Registrar un nuevo cliente")
     @PostMapping
     public ResponseEntity<Cliente> registrar(@Valid @RequestBody Cliente cliente) {
@@ -44,14 +44,14 @@ public class ClienteController {
         return ResponseEntity.ok(nuevo);
     }
 
-    // === 2️⃣ OBTENER TODOS LOS CLIENTES ===
+    // ===  OBTENER TODOS LOS CLIENTES ===
     @Operation(summary = "Obtener la lista completa de clientes")
     @GetMapping
     public List<Cliente> listar() {
         return clienteService.listar();
     }
 
-    // === 3️⃣ OBTENER CLIENTE POR ID ===
+    // ===  OBTENER CLIENTE POR ID ===
     @Operation(summary = "Obtener un cliente por su ID")
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> obtener(@PathVariable Long id) {
@@ -60,7 +60,7 @@ public class ClienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // === 4️ ACTUALIZAR CLIENTE ===
+    // === ACTUALIZAR CLIENTE ===
     @Operation(summary = "Actualizar los datos de un cliente existente")
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> actualizar(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {
@@ -72,7 +72,7 @@ public class ClienteController {
         }
     }
 
-    // === 5️ ELIMINAR CLIENTE ===
+    // === ELIMINAR CLIENTE ===
     @Operation(summary = "Eliminar un cliente por su ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {

@@ -14,7 +14,7 @@ Esta versión utiliza **almacenamiento en memoria** (colecciones Java) para simu
 Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
 - **Java 17 o superior**  
-- **Maven 3.9.x o superior**  
+- **Maven 3.9.x o superior** (opcional, puedes usar el wrapper incluido)  
 - **Git** (opcional, para clonar el repositorio)
 
 ---
@@ -22,52 +22,23 @@ Antes de ejecutar el proyecto, asegúrate de tener instalado:
 ## 🚀 Instalación y Ejecución
 
 
-### 🔧 Ejecución paso a paso
 
-1. **Clonar el repositorio**
+### 🚀 Ejecución paso a paso
 
-   ```bash
-   git clone https://github.com/alexis20010211/Parcial-Componentes.git
+1. **🛠 Clonar el repositorio:**
 
+```bash
+git clone https://github.com/alexis20010211/Parcial-Componentes.git
 
-2. Estar dentro de la carpeta del proyecto 
+📂 Entrar a la carpeta del proyecto:
 
-
-Parcial-Componentes
-
-3. Compilar y ejecutar la aplicación
-
-- mvn spring-boot:run
-
-4. Acceder a Swagger UI para probar la API
-
-Abre en tu navegador:
-👉 http://localhost:8080/swagger-ui/index.html
+cd Parcial-Componentes
 
 
+Compilar y ejecutar la aplicación:
 
+mvn spring-boot:run
 
-📬 Endpoints Principales
+Acceder a Swagger UI para probar la API:
 
-Una vez en ejecución, podrás probar los siguientes endpoints desde Swagger UI o Postman:
-
-Controlador	Endpoint base	Descripción
-Solicitudes	/api/solicitudes	CRUD de solicitudes de soporte
-Clientes	/api/clientes	CRUD de clientes
-Técnicos	/api/tecnicos	CRUD de técnicos
-Autenticación	/api/auth	Registro e inicio de sesión de usuarios
-
-🧩 Ejemplo de Petición (POST)
-
-Endpoint:
-POST /api/solicitudes
-
-Cuerpo de la solicitud (JSON):
-
-{
-  "titulo": "Problema con la red",
-  "descripcion": "El cliente no puede conectarse al servidor.",
-  "clienteId": 1,
-  "tecnicoId": 2,
-  "estado": "PENDIENTE"
-}
+http://localhost:8080/swagger-ui/index.html
