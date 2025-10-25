@@ -41,14 +41,20 @@ public class Cliente {
     @Schema(description = "Contraseña de acceso del cliente", example = "123456")
     private String password;
 
+    @NotBlank(message = "El teléfono no puede estar vacío")
+    @Size(min = 6, max = 20, message = "El teléfono debe tener entre 6 y 20 caracteres")
+    @Schema(description = "Número de teléfono del cliente", example = "987654321")
+    private String telefono;
+
     // === Constructores ===
     public Cliente() {}
 
-    public Cliente(Long id, String nombre, String correo, String password) {
+    public Cliente(Long id, String nombre, String correo, String password, String telefono) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.password = password;
+        this.telefono = telefono;
     }
 
     // === Getters y Setters ===
@@ -64,13 +70,17 @@ public class Cliente {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    // === toString (para depuración) ===
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    // === toString ===
     @Override
     public String toString() {
         return "Cliente{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", correo='" + correo + '\'' +
+                ", telefono='" + telefono + '\'' +
                 '}';
     }
 }

@@ -1,55 +1,59 @@
 package com.empresa.supportapi.Interfaces;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.empresa.supportapi.model.Solicitud;
 
 /**
  * Interfaz que define las operaciones principales para la gestión de solicitudes de soporte técnico.
- * 
- * Esta interfaz abstrae la lógica de negocio que será implementada por la clase
- * {@link com.empresa.supportapi.service.SolicitudService}.
+ * Esta interfaz abstrae la lógica de negocio que será implementada por la clase SolicitudService.
  */
 public interface ISolicitudService {
 
     /**
-     * Retorna la lista completa de solicitudes registradas.
+     * Crea y registra una nueva solicitud.
      *
-     * @return lista de objetos {@link Solicitud}
+     * @param solicitud objeto Solicitud con los datos a registrar
+     * @return la solicitud registrada con ID asignado
      */
-    List<Solicitud> listar();
+    Solicitud save(Solicitud solicitud);
 
     /**
-     * Registra una nueva solicitud en la lista en memoria.
+     * Obtiene todas las solicitudes registradas.
      *
-     * @param solicitud objeto con los datos a registrar
-     * @return la solicitud registrada con su ID asignado
+     * @return lista de todas las solicitudes
      */
-    Solicitud registrar(Solicitud solicitud);
+    List<Solicitud> findAll();
 
     /**
-     * Busca una solicitud por su identificador único.
+     * Obtiene las solicitudes de un cliente específico.
      *
-     * @param id identificador de la solicitud
-     * @return un {@link Optional} que puede contener la solicitud encontrada
+     * @param clienteId ID del cliente
+     * @return lista de solicitudes del cliente
      */
-    Optional<Solicitud> obtenerPorId(Long id);
+    List<Solicitud> findByClienteId(Long clienteId);
 
     /**
-     * Actualiza los datos de una solicitud existente.
+     * Actualiza una solicitud existente.
      *
-     * @param id identificador de la solicitud a actualizar
-     * @param solicitudActualizada objeto con los nuevos datos
-     * @return un {@link Optional} con la solicitud actualizada, si existe
+     * @param id ID de la solicitud a actualizar
+     * @param solicitud objeto con los nuevos datos
+     * @return la solicitud actualizada
      */
-    Optional<Solicitud> actualizar(Long id, Solicitud solicitudActualizada);
+    Solicitud update(Long id, Solicitud solicitud);
 
     /**
-     * Elimina una solicitud del registro.
+     * Elimina una solicitud por su ID.
      *
-     * @param id identificador de la solicitud a eliminar
-     * @return true si la solicitud fue eliminada correctamente, false si no existe
+     * @param id ID de la solicitud a eliminar
      */
-    boolean eliminar(Long id);
+    void delete(Long id);
+
+    /**
+     * Obtiene una solicitud por su ID.
+     *
+     * @param id ID de la solicitud
+     * @return la solicitud encontrada
+     */
+    Solicitud findById(Long id);
 }

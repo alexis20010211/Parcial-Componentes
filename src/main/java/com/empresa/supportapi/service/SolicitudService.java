@@ -7,83 +7,60 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.empresa.supportapi.Interfaces.ISolicitudService;
-import com.empresa.supportapi.model.EstadoSolicitud;
 import com.empresa.supportapi.model.Solicitud;
 
-/**
- * Implementación en memoria del servicio de gestión de solicitudes de soporte técnico.
- * 
- * Esta clase simula la persistencia de datos utilizando una lista en memoria,
- * cumpliendo con la arquitectura de capas del proyecto (modelo → servicio → controlador).
- */
 @Service
 public class SolicitudService implements ISolicitudService {
 
-    // Simulación de base de datos en memoria
+    // Lista simulando la base de datos
     private final List<Solicitud> solicitudes = new ArrayList<>();
     private Long nextId = 1L;
 
-    /**
-     * Retorna todas las solicitudes registradas.
-     */
     @Override
-    public List<Solicitud> listar() {
-        return solicitudes;
-    }
-
-    /**
-     * Registra una nueva solicitud en memoria.
-     */
-    @Override
-    public Solicitud registrar(Solicitud solicitud) {
+    public Solicitud save(Solicitud solicitud) {
         solicitud.setId(nextId++);
-
-        // Si no se envía estado, se asigna por defecto "PENDIENTE"
-        if (solicitud.getEstado() == null) {
-            solicitud.setEstado(EstadoSolicitud.PENDIENTE);
-        }
-
         solicitudes.add(solicitud);
         return solicitud;
     }
 
-    /**
-     * Busca una solicitud por su ID.
-     */
     @Override
-    public Optional<Solicitud> obtenerPorId(Long id) {
-        return solicitudes.stream()
-                .filter(s -> s.getId().equals(id))
-                .findFirst();
+    public List<Solicitud> findAll() {
+        return new ArrayList<>(solicitudes);
     }
 
-    /**
-     * Actualiza los datos de una solicitud existente.
-     */
     @Override
-    public Optional<Solicitud> actualizar(Long id, Solicitud solicitudActualizada) {
-        for (int i = 0; i < solicitudes.size(); i++) {
-            if (solicitudes.get(i).getId().equals(id)) {
-                // Mantener el mismo ID
-                solicitudActualizada.setId(id);
-
-                // Si no se envía un estado nuevo, conservar el anterior
-                if (solicitudActualizada.getEstado() == null) {
-                    solicitudActualizada.setEstado(solicitudes.get(i).getEstado());
-                }
-
-                solicitudes.set(i, solicitudActualizada);
-                return Optional.of(solicitudActualizada);
+    public List<Solicitud> findByClienteId(Long clienteId) {
+        List<Solicitud> resultado = new ArrayList<>();
+        for (Solicitud s : solicitudes) {
+            if (s.getClienteId().equals(clienteId)) {
+                resultado.add(s);
             }
         }
-        return Optional.empty();
+        return resultado;
     }
 
-    /**
-     * Elimina una solicitud por su ID.
-     */
     @Override
-    public boolean eliminar(Long id) {
-        return solicitudes.removeIf(s -> s.getId().equals(id));
+    public Solicitud findById(Long id) {
+        Optional<Solicitud> s = solicitudes.stream()
+                                           .filter(sol -> sol.getId().equals(id))
+                                           .findFirst();
+        return s.orElse(null);
+    }
+
+    @Override
+    public Solicitud update(Long id, Solicitud solicitud) {
+        for (int i = 0; i < solicitudes.size(); i++) {
+            if (solicitudes.get(i).getId().equals(id)) {
+                solicitud.setId(id); // mantener el ID original
+                solicitudes.set(i, solicitud);
+                return solicitud;
+            }
+        }
+        return null; // no encontrado
+    }
+
+    @Override
+    public void delete(Long id) {
+        solicitudes.removeIf(sol -> sol.getId().equals(id));
     }
 }

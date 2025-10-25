@@ -14,16 +14,19 @@ public class TecnicoService {
     private final List<Tecnico> tecnicos = new ArrayList<>();
     private Long siguienteId = 1L;
 
+    // === Crear un nuevo técnico ===
     public Tecnico crearTecnico(Tecnico tecnico) {
         tecnico.setId(siguienteId++);
         tecnicos.add(tecnico);
         return tecnico;
     }
 
-    public List<Tecnico> obtenerTodos() {
-        return tecnicos;
+    // === Obtener todos los técnicos ===
+    public List<Tecnico> getAllTecnicos() {
+        return new ArrayList<>(tecnicos); // devolvemos copia para seguridad
     }
 
+    // === Obtener técnico por ID ===
     public Tecnico obtenerPorId(Long id) {
         return tecnicos.stream()
                 .filter(t -> t.getId().equals(id))
@@ -31,6 +34,7 @@ public class TecnicoService {
                 .orElseThrow(() -> new NoSuchElementException("Técnico no encontrado con ID: " + id));
     }
 
+    // === Actualizar técnico existente ===
     public Tecnico actualizar(Long id, Tecnico tecnico) {
         Tecnico existente = obtenerPorId(id);
         existente.setNombre(tecnico.getNombre());
@@ -38,6 +42,7 @@ public class TecnicoService {
         return existente;
     }
 
+    // === Eliminar técnico por ID ===
     public void eliminar(Long id) {
         Tecnico tecnico = obtenerPorId(id);
         tecnicos.remove(tecnico);

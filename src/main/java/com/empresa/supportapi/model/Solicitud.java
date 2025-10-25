@@ -42,10 +42,23 @@ public class Solicitud {
     @NotNull(message = "Debe especificar un estado de solicitud")
     private EstadoSolicitud estado;
 
-    // Constructor vacío
+    // =========================
+    // Constructores
+    // =========================
+
+    /** Constructor vacío requerido por JPA */
     public Solicitud() {}
 
-    // Constructor completo
+    /**
+     * Constructor completo con todos los atributos.
+     *
+     * @param id ID de la solicitud
+     * @param titulo título de la solicitud
+     * @param descripcion descripción de la solicitud
+     * @param clienteId ID del cliente que realiza la solicitud
+     * @param tecnicoId ID del técnico asignado
+     * @param estado estado actual de la solicitud
+     */
     public Solicitud(Long id, String titulo, String descripcion, Long clienteId, Long tecnicoId, EstadoSolicitud estado) {
         this.id = id;
         this.titulo = titulo;
@@ -55,22 +68,70 @@ public class Solicitud {
         this.estado = estado;
     }
 
+    // =========================
     // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // =========================
 
-    public String getTitulo() { return titulo; }
-    public void setTitulo(String titulo) { this.titulo = titulo; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Long getClienteId() { return clienteId; }
-    public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
+    public String getTitulo() {
+        return titulo;
+    }
 
-    public Long getTecnicoId() { return tecnicoId; }
-    public void setTecnicoId(Long tecnicoId) { this.tecnicoId = tecnicoId; }
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
 
-    public EstadoSolicitud getEstado() { return estado; }
-    public void setEstado(EstadoSolicitud estado) { this.estado = estado; }
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
+    }
+
+    public Long getTecnicoId() {
+        return tecnicoId;
+    }
+
+    public void setTecnicoId(Long tecnicoId) {
+        this.tecnicoId = tecnicoId;
+    }
+
+    public EstadoSolicitud getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoSolicitud estado) {
+        this.estado = estado;
+    }
+
+    // =========================
+    // Métodos adicionales (opcional)
+    // =========================
+    @Override
+    public String toString() {
+        return "Solicitud{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", clienteId=" + clienteId +
+                ", tecnicoId=" + tecnicoId +
+                ", estado=" + estado +
+                '}';
+    }
 }

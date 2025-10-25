@@ -1,10 +1,7 @@
 package com.empresa.supportapi.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,75 +15,71 @@ import org.springframework.web.bind.annotation.RestController;
 import com.empresa.supportapi.Interfaces.ISolicitudService;
 import com.empresa.supportapi.model.Solicitud;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-/**
- * Controlador REST para la gestión de solicitudes de soporte técnico.
- * 
- * Expone endpoints para registrar, listar, actualizar y eliminar solicitudes.
- */
 @RestController
-@RequestMapping("/api/solicitudes")
-@Tag(name = "Solicitudes-Controller", description = "Operaciones CRUD para la gestión de solicitudes de soporte técnico")
+@RequestMapping("/solicitudes")
 public class SolicitudController {
 
-    @Autowired
-    private ISolicitudService solicitudService;
+    private final ISolicitudService solicitudService;
 
-    // === 1️⃣ CREAR SOLICITUD ===
-    @Operation(summary = "Registrar una nueva solicitud")
-    @PostMapping
-    public ResponseEntity<Solicitud> registrar(@Valid @RequestBody Solicitud solicitud) {
-        Solicitud creada = solicitudService.registrar(solicitud);
-        return ResponseEntity.status(HttpStatus.CREATED).body(creada);
+    // Inyección por constructor
+    public SolicitudController(ISolicitudService solicitudService) {
+        this.solicitudService = solicitudService;
     }
 
-    // === 2️⃣ LISTAR TODAS LAS SOLICITUDES ===
-    @Operation(summary = "Obtener todas las solicitudes registradas")
+    // Crear nueva solicitud con validación
+    @PostMapping
+    public ResponseEntity<Solicitud> crearSolicitud(@Valid @RequestBody Solicitud solicitud) {
+        Solicitud nuevaSolicitud = solicitudService.save(solicitud);
+        return ResponseEntity.status(201).body(nuevaSolicitud);
+    }
+
+    // Listar todas las solicitudes
     @GetMapping
-    public ResponseEntity<List<Solicitud>> listar() {
-        List<Solicitud> lista = solicitudService.listar();
+    public ResponseEntity<List<Solicitud>> listarSolicitudes() {
+        List<Solicitud> lista = solicitudService.findAll();
+        if (lista.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(lista);
     }
 
-    // === 3️⃣ OBTENER SOLICITUD POR ID ===
-    @Operation(summary = "Obtener una solicitud por su ID")
+    // Listar solicitudes por cliente
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<Solicitud>> listarPorCliente(@PathVariable Long clienteId) {
+        List<Solicitud> lista = solicitudService.findByClienteId(clienteId);
+        if (lista.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(lista);
+    }
+
+    // Obtener solicitud por id
     @GetMapping("/{id}")
-    public ResponseEntity<?> obtenerPorId(@PathVariable Long id) {
-        Optional<Solicitud> solicitud = solicitudService.obtenerPorId(id);
-        if (solicitud.isPresent()) {
-            return ResponseEntity.ok(solicitud.get());
+    public ResponseEntity<Solicitud> obtenerSolicitud(@PathVariable Long id) {
+        Solicitud solicitud = solicitudService.findById(id);
+        if (solicitud != null) {
+            return ResponseEntity.ok(solicitud);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se encontró la solicitud con ID: " + id);
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // === 4️⃣ ACTUALIZAR SOLICITUD ===
-    @Operation(summary = "Actualizar una solicitud existente")
+    // Actualizar solicitud
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable Long id, @Valid @RequestBody Solicitud solicitud) {
-        Optional<Solicitud> actualizada = solicitudService.actualizar(id, solicitud);
-        if (actualizada.isPresent()) {
-            return ResponseEntity.ok(actualizada.get());
+    public ResponseEntity<Solicitud> actualizarSolicitud(@PathVariable Long id, @Valid @RequestBody Solicitud solicitud) {
+        Solicitud actualizada = solicitudService.update(id, solicitud);
+        if (actualizada != null) {
+            return ResponseEntity.ok(actualizada);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se pudo actualizar: la solicitud con ID " + id + " no existe.");
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // === 5️⃣ ELIMINAR SOLICITUD ===
-    @Operation(summary = "Eliminar una solicitud por su ID")
+    // Eliminar solicitud
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Long id) {
-        boolean eliminado = solicitudService.eliminar(id);
-        if (eliminado) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se encontró la solicitud con ID: " + id);
+    public ResponseEntity<Void> eliminarSolicitud(@PathVariable Long id) {
+        if (solicitudService.findById(id) == null) {
+            return ResponseEntity.notFound().build();
         }
+        solicitudService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

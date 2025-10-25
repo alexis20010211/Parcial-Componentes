@@ -1,15 +1,10 @@
-// Manejar respuestas HTTP (ResponseEntity)
-// Anotar controladores y endpoints (@RestController, @GetMapping, @PostMapping, etc.)
-// Permitir llamadas desde el frontend (CORS con @CrossOrigin)
-// Usar tu modelo (Cliente)
-// Llamar al servicio de autenticación (AuthService)
-
 package com.empresa.supportapi.controller;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.empresa.supportapi.model.Cliente;
+import com.empresa.supportapi.model.Tecnico;
 import com.empresa.supportapi.service.AuthService;
+import com.empresa.supportapi.service.TecnicoService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,19 +23,20 @@ import com.empresa.supportapi.service.AuthService;
 public class AuthController {
 
     private final AuthService authService;
+    private final TecnicoService tecnicoService;
 
-    // === Constructor ===
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, TecnicoService tecnicoService) {
         this.authService = authService;
+        this.tecnicoService = tecnicoService;
     }
 
-    // ===  Registro ===
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Cliente cliente) {
+    // === Registro público de clientes ===
+    @PostMapping("/register/cliente")
+    public ResponseEntity<?> registerCliente(@RequestBody Cliente cliente) {
         try {
             Cliente registrado = authService.register(cliente);
             return ResponseEntity.ok(Map.of(
-                "mensaje", "Registro exitoso",
+                "mensaje", "Cliente registrado exitosamente",
                 "cliente", registrado
             ));
         } catch (RuntimeException e) {
@@ -48,28 +46,53 @@ public class AuthController {
         }
     }
 
-    // === Login ===
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> datos) {
+    // === Registro de técnicos (solo ADMIN) ===
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/register/tecnico")
+    public ResponseEntity<?> registerTecnico(@RequestBody Tecnico tecnico) {
         try {
-            String correo = datos.get("correo");
-            String password = datos.get("password");
-            Cliente cliente = authService.login(correo, password);
-
+            Tecnico registrado = tecnicoService.crearTecnico(tecnico);
             return ResponseEntity.ok(Map.of(
-                "mensaje", "Login exitoso",
-                "cliente", cliente
+                "mensaje", "Técnico registrado exitosamente",
+                "tecnico", registrado
             ));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body(Map.of(
+            return ResponseEntity.badRequest().body(Map.of(
                 "error", e.getMessage()
             ));
         }
     }
 
-    // === Obtener todos los clientes (solo para pruebas) ===
+    // === Login solo para clientes ===
+    @PostMapping("/login")
+    public ResponseEntity<?> loginCliente(@RequestBody Map<String, String> datos) {
+        try {
+            String correo = datos.get("correo");
+            String password = datos.get("password");
+            Cliente cliente = authService.login(correo, password);
+            return ResponseEntity.ok(Map.of(
+                "mensaje", "Login exitoso",
+                "rol", "CLIENTE",
+                "usuario", cliente
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(Map.of(
+                "error", "Credenciales incorrectas o usuario no encontrado"
+            ));
+        }
+    }
+
+    // === Listar todos los clientes (ADMIN y TECNICO) ===
+    @PreAuthorize("hasAnyRole('ADMIN', 'TECNICO')")
     @GetMapping("/clientes")
-    public ResponseEntity<List<Cliente>> getAll() {
+    public ResponseEntity<List<Cliente>> getAllClientes() {
         return ResponseEntity.ok(authService.getAllClientes());
+    }
+
+    // === Listar todos los técnicos (solo ADMIN) ===
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/tecnicos")
+    public ResponseEntity<List<Tecnico>> getAllTecnicos() {
+        return ResponseEntity.ok(tecnicoService.getAllTecnicos());
     }
 }
