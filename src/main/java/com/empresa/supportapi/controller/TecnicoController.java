@@ -55,4 +55,7 @@ public class TecnicoController {
         }
         return ResponseEntity.ok(actualizado);
     }
+
+
+    // === 6 obtener tecnicos por nombre
 }
