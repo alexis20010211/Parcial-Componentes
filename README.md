@@ -1,4 +1,4 @@
-# 🧰 Sistema de Gestión de Soporte Técnico — *SupportAPI*
+# 🧰 Sistema de Gestión de Soporte Técnico — SupportAPI
 
 ## 📖 Descripción General
 
