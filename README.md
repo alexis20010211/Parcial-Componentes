@@ -2,10 +2,10 @@
 
 ## 📖 Descripción General
 
-**SupportAPI** es una aplicación desarrollada con **Spring Boot** que permite gestionar solicitudes de soporte técnico mediante una **API RESTful**.  
+*SupportAPI* es una aplicación desarrollada con *Spring Boot* que permite gestionar solicitudes de soporte técnico mediante una *API RESTful*.  
 Su objetivo principal es registrar, consultar, actualizar y eliminar solicitudes de soporte de forma ordenada y centralizada.
 
-Esta versión utiliza **almacenamiento en memoria** (colecciones Java) para simular una base de datos, lo que permite realizar pruebas sin necesidad de configurar un servidor de base de datos real.
+Esta versión utiliza *almacenamiento en memoria* (colecciones Java) para simular una base de datos, lo que permite realizar pruebas sin necesidad de configurar un servidor de base de datos real.
 
 ---
 
