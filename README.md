@@ -13,11 +13,12 @@ Esta versión utiliza *almacenamiento en memoria* (colecciones Java) para simula
 
 Antes de ejecutar el proyecto, asegúrate de tener instalado:
 
-- **Java 17 o superior**  
-- **Maven 3.9.x o superior** (opcional, puedes usar el wrapper incluido)  
-- **Git** (opcional, para clonar el repositorio)
+- *Java 17 o superior*  
+- *Maven 3.9.x o superior* (opcional, puedes usar el wrapper incluido)  
+- *Git* (opcional, para clonar el repositorio)
 
 ---
+
 
 ## 🚀 Instalación y Ejecución
 
