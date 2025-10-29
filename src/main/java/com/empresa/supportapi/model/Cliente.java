@@ -18,6 +18,7 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "clientes")
 @Schema(description = "Modelo que representa a un cliente del sistema")
+//TODO: QUIERO OBTENER LA LISTA DE SOLICITUDES PENDIENTES DE UN CLIENTE
 public class Cliente {
 
     // === Atributos ===

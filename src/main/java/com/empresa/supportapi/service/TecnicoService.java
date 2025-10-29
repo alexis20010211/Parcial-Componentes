@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.empresa.supportapi.model.Tecnico;
 
+// TODO: hacer uso de BD accediendo a la table Tecnicos, cambiar la logica de usar listas
+// DOS OPCIONES: MODIFICAR ESTA CLASE O CREAR UNA CLASE NUEVA TecnicoServiceBD implement ITecnicoService
 @Service
 public class TecnicoService {
 

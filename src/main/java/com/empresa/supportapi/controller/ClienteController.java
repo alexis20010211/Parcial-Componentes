@@ -47,6 +47,9 @@ public class ClienteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //TODO: ENDPOINT NUEVO PARA OBTENER SOLICITUDES PENDIENTES DEL CLIENTE
+    // url -> /{id}/solicitudes/{status} || /{id}/solicitudes?status='PENDIENTES'
+
     // === Actualizar su propio perfil ===
     @Operation(summary = "Actualizar los datos del cliente (solo su cuenta)")
     @PutMapping("/{id}")

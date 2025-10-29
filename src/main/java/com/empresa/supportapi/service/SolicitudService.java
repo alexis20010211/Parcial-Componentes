@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.empresa.supportapi.Interfaces.ISolicitudService;
 import com.empresa.supportapi.model.Solicitud;
 
+// TODO: cambiar la logica de lista por BD
+// DOS OPCIONES: MODIFICAR ESTA CLASE O CREAR UNA CLASE NUEVA SolicitudServiceBD implement ISolicitudService
 @Service
 public class SolicitudService implements ISolicitudService {
 
