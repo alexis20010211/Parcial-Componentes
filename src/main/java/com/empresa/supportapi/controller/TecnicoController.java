@@ -57,5 +57,5 @@ public class TecnicoController {
     }
 
 
-    // === 6 obtener tecnicos por nombre
+
 }

@@ -15,10 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.empresa.supportapi.Interfaces.ISolicitudService;
 import com.empresa.supportapi.model.Solicitud;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/solicitudes")
+@RequestMapping("/api/solicitudes")
+@Tag(
+    name = "solicitud-controller",
+    description = "Operaciones de gestión de solicitudes de soporte técnico"
+)
 public class SolicitudController {
 
     private final ISolicitudService solicitudService;
@@ -29,6 +35,10 @@ public class SolicitudController {
     }
 
     // Crear nueva solicitud con validación
+    @Operation(
+        summary = "Registrar una nueva solicitud",
+        description = "Permite al cliente registrar una nueva solicitud de soporte técnico para ser atendida por un técnico."
+    )
     @PostMapping
     public ResponseEntity<Solicitud> crearSolicitud(@Valid @RequestBody Solicitud solicitud) {
         Solicitud nuevaSolicitud = solicitudService.save(solicitud);
@@ -36,6 +46,10 @@ public class SolicitudController {
     }
 
     // Listar todas las solicitudes
+    @Operation(
+        summary = "Listar todas las solicitudes",
+        description = "Obtiene una lista con todas las solicitudes registradas en el sistema."
+    )
     @GetMapping
     public ResponseEntity<List<Solicitud>> listarSolicitudes() {
         List<Solicitud> lista = solicitudService.findAll();
@@ -44,6 +58,10 @@ public class SolicitudController {
     }
 
     // Listar solicitudes por cliente
+    @Operation(
+        summary = "Listar solicitudes por cliente",
+        description = "Devuelve todas las solicitudes registradas por un cliente específico según su ID."
+    )
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<Solicitud>> listarPorCliente(@PathVariable Long clienteId) {
         List<Solicitud> lista = solicitudService.findByClienteId(clienteId);
@@ -52,6 +70,10 @@ public class SolicitudController {
     }
 
     // Obtener solicitud por id
+    @Operation(
+        summary = "Obtener una solicitud por su ID",
+        description = "Devuelve los detalles de una solicitud específica según su identificador único."
+    )
     @GetMapping("/{id}")
     public ResponseEntity<Solicitud> obtenerSolicitud(@PathVariable Long id) {
         Solicitud solicitud = solicitudService.findById(id);
@@ -63,8 +85,14 @@ public class SolicitudController {
     }
 
     // Actualizar solicitud
+    @Operation(
+        summary = "Actualizar una solicitud existente",
+        description = "Permite modificar los datos de una solicitud ya registrada, identificada por su ID."
+    )
     @PutMapping("/{id}")
-    public ResponseEntity<Solicitud> actualizarSolicitud(@PathVariable Long id, @Valid @RequestBody Solicitud solicitud) {
+    public ResponseEntity<Solicitud> actualizarSolicitud(
+            @PathVariable Long id,
+            @Valid @RequestBody Solicitud solicitud) {
         Solicitud actualizada = solicitudService.update(id, solicitud);
         if (actualizada != null) {
             return ResponseEntity.ok(actualizada);
@@ -74,6 +102,10 @@ public class SolicitudController {
     }
 
     // Eliminar solicitud
+    @Operation(
+        summary = "Eliminar una solicitud por su ID",
+        description = "Elimina permanentemente una solicitud del sistema si existe el registro correspondiente."
+    )
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarSolicitud(@PathVariable Long id) {
         if (solicitudService.findById(id) == null) {

@@ -13,7 +13,6 @@ import com.empresa.supportapi.model.Solicitud;
 
 /**
  * Repositorio en memoria para manejar las solicitudes de soporte técnico.
- * Cumple con la simulación requerida por la rúbrica del proyecto.
  */
 @Repository
 public class SolicitudRepository {

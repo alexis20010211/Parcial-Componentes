@@ -82,6 +82,7 @@ Tomcat started on port(s): 8080 (http)
 Started SupportapiApplication in X.XXX seconds
 
 
+<<<<<<< HEAD
 significa que el servidor se inició correctamente 🎉
 
 🌐 Acceso a la API
@@ -131,3 +132,21 @@ Java 17
 📄 Licencia
 
 Proyecto académico — Desarrollado para fines educativos por el equipo IDAT.
+=======
+| Usuario  | Contraseña | Rol       | Acceso Principal en la API |
+|----------|------------|-----------|----------------------------------------------------------------------|
+| 🛡️ **admin**  | `admin123` | **ADMIN**   | ✅ Acceso completo a **todos los endpoints**|
+| 🛠️ **tecnico**| `tec123`   | **TECNICO** | ⚡ Gestionar **clientes**, **solicitudes** y **estados de solicitudes** |
+| 👤 **cliente**| `cli123`   | **CLIENTE** | 📄 Gestionar únicamente **sus solicitudes**|
+
+
+// para entrar al Postman como administrador la url es 
+// anteriormente no entraba porque el nombre era admins
+
+http://localhost:8080/api/admi
+
+
+entrar a basic auth  y poner las contraseñas 
+user name : admin
+password: admin123
+>>>>>>> 511d1bf (se levanto las observaciones)
